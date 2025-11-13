@@ -1,14 +1,14 @@
 import mysql.connector
 from mysql.connector import Error
-
+from datetime import datetime
 
 # FUNÇÃO DE CONEXÃO
 def conectar():
     try:
         conexao = mysql.connector.connect(
-            host="", #LOCALHOST
-            user="", #ROOT
-            password="",  # troque pela sua senha do MySQL
+            host="localhost", #LOCALHOST
+            user="root", #ROOT
+            password="Escola21",  # troque pela sua senha do MySQL
             database="universidade" #ESSE MESMO
         )
         return conexao
@@ -57,6 +57,17 @@ def excluir_curso(id_curso):
 
 
 # ALUNOS
+
+from datetime import datetime
+
+def formatar_data_nascimento(data_str: str) -> str:
+    try:
+        data_formatada = datetime.strptime(data_str, "%d%m%Y").strftime("%Y-%m-%d")
+        return data_formatada
+    except ValueError:
+        raise ValueError("Data inválida. Digite no formato DDMMYYYY (ex: 12082005).")
+
+
 def inserir_aluno(nome, cpf, data_nascimento, id_curso):
     con = conectar()
     if con:
