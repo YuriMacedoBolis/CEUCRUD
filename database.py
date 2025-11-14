@@ -6,10 +6,10 @@ from datetime import datetime
 def conectar():
     try:
         conexao = mysql.connector.connect(
-            host="localhost", #LOCALHOST
-            user="root", #ROOT
-            password="Escola21",  # troque pela sua senha do MySQL
-            database="universidade" #ESSE MESMO
+            host="", #LOCALHOST
+            user="", #ROOT
+            password="",  # troque pela sua senha do MySQL
+            database="" #ESSE MESMO
         )
         return conexao
     except Error as e:

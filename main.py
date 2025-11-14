@@ -15,6 +15,13 @@ class UniversidadeApp(ctk.CTk):
         self.title("CEUCRUD")
         self.geometry("1920x1080")
         self.resizable(True , True)
+        self.switch_tema = ctk.CTkSwitch(self , width=200, height=150 ,text="Modo Escuro" , command=self.alterar_tema , fg_color="black" , text_color="black")
+        self.switch_tema.place(relx=0.95 , y=50 , anchor="center")
+        if ctk.get_appearance_mode() == "dark":
+            self.switch_tema.deselect()
+        else:
+            self.switch_tema.select()
+        
         
         #TITULO PRINCIPAL
         titulo = ctk.CTkLabel(self, text="Sistema de Gerenciamento Universitário", font=("Arial", 30, "bold") , text_color="black")
@@ -36,93 +43,120 @@ class UniversidadeApp(ctk.CTk):
         aba_matriculas = abas.add("Matrículas")
 
         # ABA CURSOS
+            #NOME
         self.curso_nome = ctk.CTkEntry(aba_cursos, placeholder_text="Nome do Curso")
         self.curso_nome.place(relx=0.5 - 0.1 , rely=0.2 , anchor="center")
+            #DURAÇÃO
         self.curso_duracao = ctk.CTkEntry(aba_cursos, placeholder_text="Duração (em semestres)")
         self.curso_duracao.place(relx=0.5 + 0.1 , rely=0.2 , anchor="center")
+            #BANCO_DE_DADOS
         self.txt_cursos = ctk.CTkTextbox(aba_cursos, width=700, height=300)
         self.txt_cursos.place(relx=0.5 , rely=0.5 , anchor="center")
-
-        ctk.CTkButton(aba_cursos, text="Adicionar Curso", command=self.adicionar_curso).place(relx=0.5 -0.22 , rely=0.85 , anchor="center")
-        ctk.CTkButton(aba_cursos, text="Listar Cursos", command=self.listar_cursos).place(relx=0.5 -0.1 , rely=0.85 , anchor="center")
+            #EXCLUIR
         self.txt_exc_curso = ctk.CTkEntry(aba_cursos,placeholder_text="Id para Excluir")
         self.txt_exc_curso.place(relx=0.5 + 0.1 , rely=0.85 , anchor="center")
         ctk.CTkButton(aba_cursos, text="Excluir" , command=self.deletar_curso).place(relx=0.5 + 0.22, rely=0.85 , anchor="center")
+            #ADICIONAR
+        ctk.CTkButton(aba_cursos, text="Adicionar Curso", command=self.adicionar_curso).place(relx=0.5 -0.22 , rely=0.85 , anchor="center")
+            #LISTAR
+        ctk.CTkButton(aba_cursos, text="Listar Cursos", command=self.listar_cursos).place(relx=0.5 -0.1 , rely=0.85 , anchor="center")
 
         # ABA ALUNOS
+            #NOME
         self.aluno_nome = ctk.CTkEntry(aba_alunos, placeholder_text="Nome do Aluno")
-        self.aluno_nome.pack(pady=5)
+        self.aluno_nome.place(relx=0.5 - 0.22 , rely=0.2 , anchor="center")
+            #CPF
         self.aluno_cpf = ctk.CTkEntry(aba_alunos, placeholder_text="CPF (somente números)")
-        self.aluno_cpf.pack(pady=5)
+        self.aluno_cpf.place(relx=0.5 - 0.08 , rely=0.2 , anchor="center")
+            #DATA DE NASCIMENTO
         self.aluno_data = ctk.CTkEntry(aba_alunos, placeholder_text="Data de Nascimento - Somente Numeros")
-        self.aluno_data.pack(pady=5)
+        self.aluno_data.place(relx=0.5 + 0.07, rely=0.2 , anchor="center")
+            #ID DO CURSO
         self.aluno_curso = ctk.CTkEntry(aba_alunos, placeholder_text="ID do Curso")
-        self.aluno_curso.pack(pady=5)
-
+        self.aluno_curso.place(relx=0.5 + 0.22 , rely=0.2 , anchor="center")
+            #BANCO_DE_DADOS
         self.txt_alunos = ctk.CTkTextbox(aba_alunos, width=700, height=300)
         self.txt_alunos.place(relx=0.5 , rely=0.5 , anchor="center")
-        
-        ctk.CTkButton(aba_alunos, text="Adicionar Aluno", command=self.adicionar_aluno).pack(pady=5)
-        ctk.CTkButton(aba_alunos, text="Listar Alunos", command=self.listar_alunos).pack(pady=10)
-        
+            #EXCLUIR   
         self.txt_exc_aluno = ctk.CTkEntry(aba_alunos,placeholder_text="Id para Excluir")
         self.txt_exc_aluno.place(relx=0.5 + 0.1 , rely=0.85 , anchor="center")
         ctk.CTkButton(aba_alunos, text="Excluir" , command=self.deletar_aluno).place(relx=0.5 + 0.22, rely=0.85 , anchor="center")
+            #ADICIONAR 
+        ctk.CTkButton(aba_alunos, text="Adicionar Aluno", command=self.adicionar_aluno).place(relx=0.5 -0.22 , rely=0.85 , anchor="center")
+            #LISTAR
+        ctk.CTkButton(aba_alunos, text="Listar Alunos", command=self.listar_alunos).place(relx=0.5 -0.1 , rely=0.85 , anchor="center")
 
         # ABA FUNCIONÁRIOS
+            #NOME FUNCIONARIO
         self.func_nome = ctk.CTkEntry(aba_funcionarios, placeholder_text="Nome do Funcionário")
-        self.func_nome.pack(pady=5)
+        self.func_nome.place(relx=0.5 - 0.2 , rely = 0.2 , anchor="center")
+            #CARGO
         self.func_cargo = ctk.CTkEntry(aba_funcionarios, placeholder_text="Cargo")
-        self.func_cargo.pack(pady=5)
+        self.func_cargo.place(relx=0.5 , rely = 0.2 , anchor="center")
+            #SALARIO
         self.func_salario = ctk.CTkEntry(aba_funcionarios, placeholder_text="Salário (ex: 3500.00)")
-        self.func_salario.pack(pady=5)
-
-        ctk.CTkButton(aba_funcionarios, text="Adicionar Funcionário", command=self.adicionar_funcionario).pack(pady=5)
+        self.func_salario.place(relx=0.5 + 0.2 , rely = 0.2 , anchor="center")
+            #BANCO_DE_DADOS
         self.txt_funcionarios = ctk.CTkTextbox(aba_funcionarios, width=700, height=300)
         self.txt_funcionarios.place(relx=0.5 , rely=0.5 , anchor="center")
-        ctk.CTkButton(aba_funcionarios, text="Listar Funcionários", command=self.listar_funcionarios).pack()
-        
+            #ADICIONAR
+        ctk.CTkButton(aba_funcionarios, text="Adicionar Funcionário", command=self.adicionar_funcionario).place(relx=0.5 -0.22 , rely=0.85 , anchor="center")
+            #LISTAR
+        ctk.CTkButton(aba_funcionarios, text="Listar Funcionários", command=self.listar_funcionarios).place(relx=0.5 -0.1 , rely=0.85 , anchor="center")
+            #EXCLUIR
         self.txt_exc_funcionario = ctk.CTkEntry(aba_funcionarios,placeholder_text="Id para Excluir")
         self.txt_exc_funcionario.place(relx=0.5 + 0.1 , rely=0.85 , anchor="center")
         ctk.CTkButton(aba_funcionarios, text="Excluir" , command=self.deletar_funcionario).place(relx=0.5 + 0.22, rely=0.85 , anchor="center")
 
         # ABA MATÉRIAS
+            #NOME MATERIA
         self.materia_nome = ctk.CTkEntry(aba_materias, placeholder_text="Nome da Matéria")
-        self.materia_nome.pack(pady=5)
+        self.materia_nome.place(relx=0.5 - 0.1 , rely=0.2 , anchor="center")
+            #ID DO CURSO DA MATERIA
         self.materia_curso = ctk.CTkEntry(aba_materias, placeholder_text="ID do Curso")
-        self.materia_curso.pack(pady=5)
-
-        ctk.CTkButton(aba_materias, text="Adicionar Matéria", command=self.adicionar_materia).pack(pady=5)
+        self.materia_curso.place(relx=0.5 + 0.1 , rely=0.2 , anchor="center")
+            #BANCO_DE_DADOS
         self.txt_materias = ctk.CTkTextbox(aba_materias, width=700, height=300)
         self.txt_materias.place(relx=0.5 , rely=0.5 , anchor="center")
-        ctk.CTkButton(aba_materias, text="Listar Matérias", command=self.listar_materias).pack()
-        
+            #EXCLUIR
         self.txt_exc_materias = ctk.CTkEntry(aba_materias,placeholder_text="Id para Excluir")
         self.txt_exc_materias.place(relx=0.5 + 0.1 , rely=0.85 , anchor="center")
         ctk.CTkButton(aba_materias, text="Excluir" , command=self.deletar_materia).place(relx=0.5 + 0.22, rely=0.85 , anchor="center")
+            #ADICIONAR
+        ctk.CTkButton(aba_materias, text="Adicionar Matéria", command=self.adicionar_materia).place(relx=0.5 -0.22 , rely=0.85 , anchor="center")
+            #LISTAR
+        ctk.CTkButton(aba_materias, text="Listar Matérias", command=self.listar_materias).place(relx=0.5 -0.1 , rely=0.85 , anchor="center")
 
         # ABA MATRÍCULAS
+            #ID DO ALUNO
         self.matricula_aluno = ctk.CTkEntry(aba_matriculas, placeholder_text="ID do Aluno")
-        self.matricula_aluno.pack(pady=5)
+        self.matricula_aluno.place(relx=0.5 - 0.22 , rely=0.2 , anchor="center")
+            #ID DA MATERIA
         self.matricula_materia = ctk.CTkEntry(aba_matriculas, placeholder_text="ID da Matéria")
-        self.matricula_materia.pack(pady=5)
+        self.matricula_materia.place(relx=0.5 - 0.08 , rely=0.2 , anchor="center")
+            #SEMESTRE
         self.matricula_semestre = ctk.CTkEntry(aba_matriculas, placeholder_text="Semestre (ex: 1º, 2º, etc.)")
-        self.matricula_semestre.pack(pady=5)
+        self.matricula_semestre.place(relx=0.5 + 0.07, rely=0.2 , anchor="center")
+            #ANO
         self.matricula_ano = ctk.CTkEntry(aba_matriculas, placeholder_text="Ano (ex: 2025)")
-        self.matricula_ano.pack(pady=5)
-
-        ctk.CTkButton(aba_matriculas, text="Adicionar Matrícula", command=self.adicionar_matricula).pack(pady=5)
+        self.matricula_ano.place(relx=0.5 + 0.22 , rely=0.2 , anchor="center")
+            #BANCO_DE_DADOS
         self.txt_matriculas = ctk.CTkTextbox(aba_matriculas, width=700, height=300)
         self.txt_matriculas.place(relx=0.5 , rely=0.5 , anchor="center")
-        ctk.CTkButton(aba_matriculas, text="Listar Matrículas", command=self.listar_matriculas).pack()
-        
+            #EXCLUIR
         self.txt_exc_matriculas = ctk.CTkEntry(aba_matriculas,placeholder_text="Id para Excluir")
         self.txt_exc_matriculas.place(relx=0.5 + 0.1 , rely=0.85 , anchor="center")
         ctk.CTkButton(aba_matriculas, text="Excluir" , command=self.deletar_matricula).place(relx=0.5 + 0.22, rely=0.85 , anchor="center")
+            #ADICIONAR
+        ctk.CTkButton(aba_matriculas, text="Adicionar Matrícula", command=self.adicionar_matricula).place(relx=0.5 -0.22 , rely=0.85 , anchor="center")
+            #LISTAR
+        ctk.CTkButton(aba_matriculas, text="Listar Matrículas", command=self.listar_matriculas).place(relx=0.5 -0.1 , rely=0.85 , anchor="center")
 
 
     # FUNÇÕES DE CADA ABA
 
+    #FUNÇÕES CURSO
+    
     def adicionar_curso(self):
         nome = self.curso_nome.get()
         duracao = self.curso_duracao.get()
@@ -143,6 +177,7 @@ class UniversidadeApp(ctk.CTk):
         )
         self.listar_cursos()
 
+    #FUNÇÕES ALUNO
     def adicionar_aluno(self):
         inserir_aluno(
             self.aluno_nome.get(),
@@ -164,7 +199,7 @@ class UniversidadeApp(ctk.CTk):
         )
         self.listar_alunos()
     
-    #FUNCIONARIOS
+    # FUNÇÕES FUNCIONARIOS
     
     def adicionar_funcionario(self):
         inserir_funcionario(self.func_nome.get(), self.func_cargo.get(), self.func_salario.get())
@@ -182,6 +217,8 @@ class UniversidadeApp(ctk.CTk):
         )
         self.listar_funcionarios()
 
+    # FUNÇÕES MATERIA
+    
     def adicionar_materia(self):
         inserir_materia(self.materia_nome.get(), self.materia_curso.get())
         self.listar_materias()
@@ -198,6 +235,8 @@ class UniversidadeApp(ctk.CTk):
         )
         self.listar_materias()
 
+    #FUNÇÕES MATRICULA
+    
     def adicionar_matricula(self):
         inserir_matricula(
             self.matricula_aluno.get(),
@@ -218,6 +257,15 @@ class UniversidadeApp(ctk.CTk):
             self.txt_exc_matriculas.get()
         )
         self.listar_matriculas()
+        
+    #DEF ALTERAR TEMA (MODO ESCURO)
+    def alterar_tema(self):
+        if self.switch_tema.get() == 1:
+            ctk.set_appearance_mode("dark")
+            self.switch_tema.configure(text="Modo Escuro")
+        else:
+            ctk.set_appearance_mode("light")
+            self.switch_tema.configure(text="Modo Claro")
 
 # EXECUÇÃO
 
