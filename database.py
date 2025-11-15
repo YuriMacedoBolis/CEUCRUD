@@ -6,10 +6,10 @@ from datetime import datetime
 def conectar():
     try:
         conexao = mysql.connector.connect(
-            host="", #LOCALHOST
-            user="", #ROOT
-            password="",  # troque pela sua senha do MySQL
-            database="" #ESSE MESMO
+            host="localhost", #LOCALHOST
+            user="root", #ROOT
+            password="Escola21",  # troque pela sua senha do MySQL
+            database="universidade" #ESSE MESMO
         )
         return conexao
     except Error as e:
@@ -22,7 +22,7 @@ def inserir_curso(nome, duracao):
     con = conectar()
     if con:
         cursor = con.cursor()
-        cursor.execute("INSERT INTO tb_curso (nome_curso, duracao) VALUES (%s, %s)", (nome, duracao))
+        cursor.execute("INSERT INTO tb_curso (nome, duracao_semestres) VALUES (%s, %s)", (nome, duracao))
         con.commit()
         con.close()
 
@@ -41,7 +41,7 @@ def atualizar_curso(id_curso, nome, duracao):
     con = conectar()
     if con:
         cursor = con.cursor()
-        cursor.execute("UPDATE tb_curso SET nome_curso=%s, duracao=%s WHERE id_curso=%s",
+        cursor.execute("UPDATE tb_curso SET nome=%s, duracao_semestres=%s WHERE id_curso=%s",
                        (nome, duracao, id_curso))
         con.commit()
         con.close()
@@ -73,7 +73,7 @@ def inserir_aluno(nome, cpf, data_nascimento, id_curso):
     if con:
         cursor = con.cursor()
         cursor.execute(
-            "INSERT INTO tb_aluno (nome_aluno, cpf, data_nascimento, id_curso) VALUES (%s, %s, %s, %s)",
+            "INSERT INTO tb_aluno (nome, cpf, data_nascimento, id_curso) VALUES (%s, %s, %s, %s)",
             (nome, cpf, data_nascimento, id_curso)
         )
         con.commit()
@@ -85,9 +85,9 @@ def listar_alunos():
     if con:
         cursor = con.cursor()
         cursor.execute("""
-            SELECT a.id_aluno, a.nome_aluno, a.cpf, a.data_nascimento, c.nome_curso
-            FROM tb_aluno a
-            LEFT JOIN tb_curso c ON a.id_curso = c.id_curso
+            SELECT a.id_aluno, a.nome, a.cpf, a.data_nascimento, c.nome
+            FROM tb_aluno a 
+            INNER JOIN tb_curso c  ON a.id_curso = c.id_curso
         """)
         dados = cursor.fetchall()
         con.close()
@@ -100,7 +100,7 @@ def atualizar_aluno(id_aluno, nome, cpf, data_nascimento, id_curso):
         cursor = con.cursor()
         cursor.execute("""
             UPDATE tb_aluno 
-            SET nome_aluno=%s, cpf=%s, data_nascimento=%s, id_curso=%s 
+            SET nome=%s, cpf=%s, data_nascimento=%s, id_curso=%s 
             WHERE id_aluno=%s
         """, (nome, cpf, data_nascimento, id_curso, id_aluno))
         con.commit()
@@ -122,7 +122,7 @@ def inserir_funcionario(nome, cargo, salario):
     if con:
         cursor = con.cursor()
         cursor.execute("""
-            INSERT INTO tb_funcionario (nome_funcionario, cargo, salario)
+            INSERT INTO tb_funcionario (nome, cargo, salario)
             VALUES (%s, %s, %s)
         """, (nome, cargo, salario))
         con.commit()
@@ -144,7 +144,7 @@ def atualizar_funcionario(id_funcionario, nome, cargo, salario):
     if con:
         cursor = con.cursor()
         cursor.execute("""
-            UPDATE tb_funcionario SET nome_funcionario=%s, cargo=%s, salario=%s
+            UPDATE tb_funcionario SET nome=%s, cargo=%s, salario=%s
             WHERE id_funcionario=%s
         """, (nome, cargo, salario, id_funcionario))
         con.commit()
@@ -166,7 +166,7 @@ def inserir_materia(nome, id_curso):
     if con:
         cursor = con.cursor()
         cursor.execute("""
-            INSERT INTO tb_materia (nome_materia, id_curso)
+            INSERT INTO tb_materia (nome, id_curso)
             VALUES (%s, %s)
         """, (nome, id_curso))
         con.commit()
@@ -178,7 +178,7 @@ def listar_materias():
     if con:
         cursor = con.cursor()
         cursor.execute("""
-            SELECT m.id_materia, m.nome_materia, c.nome_curso
+            SELECT m.id_materia, m.nome, c.nome
             FROM tb_materia m
             LEFT JOIN tb_curso c ON m.id_curso = c.id_curso
         """)
@@ -192,7 +192,7 @@ def atualizar_materia(id_materia, nome, id_curso):
     if con:
         cursor = con.cursor()
         cursor.execute("""
-            UPDATE tb_materia SET nome_materia=%s, id_curso=%s WHERE id_materia=%s
+            UPDATE tb_materia SET nome=%s, id_curso=%s WHERE id_materia=%s
         """, (nome, id_curso, id_materia))
         con.commit()
         con.close()
@@ -225,7 +225,7 @@ def listar_matriculas():
     if con:
         cursor = con.cursor()
         cursor.execute("""
-            SELECT m.id_matricula, a.nome_aluno, ma.nome_materia, m.semestre, m.ano
+            SELECT m.id_matricula, a.nome, ma.nome, m.semestre, m.ano
             FROM tb_matricula m
             LEFT JOIN tb_aluno a ON m.id_aluno = a.id_aluno
             LEFT JOIN tb_materia ma ON m.id_materia = ma.id_materia
@@ -233,6 +233,16 @@ def listar_matriculas():
         dados = cursor.fetchall()
         con.close()
         return dados
+    
+def atualizar_matricula(id_matricula, id_aluno ,id_materia , semestre, ano):
+    con = conectar()
+    if con:
+        cursor = con.cursor()
+        cursor.execute("""
+            UPDATE tb_matricula SET id_aluno=%s , id_materia=%s, semestre=%s , ano=%s WHERE id_matricula=%s
+        """, (id_aluno, id_materia, semestre , ano , id_matricula))
+        con.commit()
+        con.close()
 
 
 def excluir_matricula(id_matricula):
